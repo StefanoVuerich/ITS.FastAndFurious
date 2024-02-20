@@ -16,5 +16,16 @@ namespace ITS.FastAndFurious.Data
 
         public DbSet<ITS.FastAndFurious.Models.Product> Product { get; set; } = default!;
         public DbSet<ITS.FastAndFurious.Models.Supplier> Supplier { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Supplier>()
+                .HasMany(x => x.Products)
+                .WithOne(x => x.Supplier);
+
+            modelBuilder.Entity<Product>()
+                .HasOne(x => x.Supplier)
+                .WithMany(x => x.Products);
+        }
     }
 }

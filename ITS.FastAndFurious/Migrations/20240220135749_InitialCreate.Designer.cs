@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ITS.FastAndFurious.Migrations
 {
     [DbContext(typeof(ITSFastAndFuriousContext))]
-    [Migration("20240220103741_AggiuntaFornitori")]
-    partial class AggiuntaFornitori
+    [Migration("20240220135749_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,12 @@ namespace ITS.FastAndFurious.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Product");
                 });
@@ -78,6 +83,22 @@ namespace ITS.FastAndFurious.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Supplier");
+                });
+
+            modelBuilder.Entity("ITS.FastAndFurious.Models.Product", b =>
+                {
+                    b.HasOne("ITS.FastAndFurious.Models.Supplier", "Supplier")
+                        .WithMany("Products")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
+                });
+
+            modelBuilder.Entity("ITS.FastAndFurious.Models.Supplier", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

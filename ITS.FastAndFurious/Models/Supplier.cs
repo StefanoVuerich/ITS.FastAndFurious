@@ -6,5 +6,7 @@
         public string Name { get; set; }
         public string Surname { get; set; }
         public int Rating { get; set; }
+
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
